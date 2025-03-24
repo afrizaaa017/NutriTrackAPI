@@ -1,0 +1,32 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('food_nutrients', function (Blueprint $table) {
+            $table->integer('food_id');
+            $table->primary('food_id');
+            $table->foreign('food_id')->references('food_id')->on('foods')->onDelete('cascade')->primary();
+            $table->string('nutrient_name');
+            $table->integer('nutrient_number');
+            $table->string('unit_name');
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('food_nutrients');
+    }
+};
