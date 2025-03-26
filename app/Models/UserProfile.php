@@ -17,13 +17,17 @@ class UserProfile extends Model
     protected $keyType = 'string';
     
     protected $fillable = [
+        'email',
+        'first_name',
+        'last_name',
         'weight',
-        'birthday',
         'height',
+        'birthday',
         'goal',
         'AMR',
-        'image',
+        'calories_needed',
         'gender',
+        'image',
         'points',
     ];
 

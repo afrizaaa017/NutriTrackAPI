@@ -15,6 +15,7 @@ class DailySummary extends Model
     protected $keyType = 'string';
     
     protected $fillable = [
+        'email',
         'date', 
         'target_calories',
         'calories_consumed',

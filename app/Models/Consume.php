@@ -10,10 +10,13 @@ class Consume extends Model
     use HasFactory;
 
     protected $table = 'consumes';
-    public $incrementing = false;
-    protected $keyType = 'string';
+    public $incrementing = false; 
+    protected $primaryKey = ['email', 'food_id']; 
+    protected $keyType = ['string', 'integer'];
 
     protected $fillable = [
+        'email',  
+        'food_id',
         'meal_time', 
         'portion',
         'total_sugar',
@@ -22,4 +25,14 @@ class Consume extends Model
         'total_carbs',
         'total_protein'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'email', 'email');
+    }
+
+    public function food()
+    {
+        return $this->belongsTo(Food::class, 'food_id', 'food_id');
+    }
 }

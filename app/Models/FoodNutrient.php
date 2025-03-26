@@ -16,6 +16,7 @@ class FoodNutrient extends Model
     
 
     protected $fillable = [
+        'food_id',
         'nutrient_name',
         'nutrient_number',
         'unit_name',
