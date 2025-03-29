@@ -6,7 +6,7 @@ use App\Http\Controllers\Api\ConsumeController;
 use App\Http\Controllers\Api\UserProfileController;
 use App\Http\Controllers\Api\DailySummaryController;
 use App\Http\Controllers\Api\AuthController;
-
+use App\Http\Controllers\Api\OnboardingController;
 
 Route::post('/profile', [UserProfileController::class, 'store']);
 Route::get('/daily-summary', [DailySummaryController::class, 'show']);
@@ -15,6 +15,9 @@ Route::post('/consume', [ConsumeController::class, 'store']);
 Route::get('/consume/daily-intake', [ConsumeController::class, 'dailyIntake']);
 
 //auth
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/register', [AuthController::class, 'register']);
-Route::get('/logout', [AuthController::class, 'logout'])->middleware(['auth:sanctum']);
+Route::post('/signin', [AuthController::class, 'signin']);
+Route::post('/signup', [AuthController::class, 'signup']);
+Route::delete('/signout', [AuthController::class, 'signout'])->middleware(['auth:sanctum']);
+
+// oboarding
+Route::post('/onboarding', [OnboardingController::class, 'onboarding'])->middleware(['auth:sanctum']);
