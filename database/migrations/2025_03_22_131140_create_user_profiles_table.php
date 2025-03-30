@@ -20,8 +20,8 @@ return new class extends Migration
             $table->float('weight');
             $table->float('height');
             $table->date('birthday');
-            $table->enum('goal', ['gain a little weight', 'gain a lot of weight', 'lose a little weight', 'lose a lot of weight', 'maintain']);
-            $table->enum('AMR', ['sedentary active', 'lightly active', 'moderately active', 'highly active']);
+            $table->enum('goal', ['Gain a little weight', 'Gain a lot of weight', 'Lose a little weight', 'Lose a lot of weight', 'Maintain weight']);
+            $table->enum('AMR', ['Sedentary active', 'Lightly active', 'Moderately active', 'Highly active', 'Extremely active']);
             $table->float('calories_needed');
             $table->boolean('gender');
             $table->string('image')->nullable();

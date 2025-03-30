@@ -25,7 +25,7 @@ class AuthController extends Controller
 
             if (!$user || !Hash::check($request->password, $user->password)) {
                 throw ValidationException::withMessages([
-                    'email' => ['The provided credentials are incorrect.'],
+                    'password' => ['The provided credentials are incorrect.'],
                 ]);
             }
             Log::info("User Logging:", ['email' => $user->email]); // Debug output
@@ -76,15 +76,48 @@ class AuthController extends Controller
             if (!$request->user()) {
                 return response()->json(['error' => 'User not authenticated'], 401);
             }
-            $user = User::where('email', $request->email)->first();
-            Log::info("Logged out:", $user->email);
-            $request->user()->currentAccessToken()->delete();
-            Log::info("Logged out:", $request->all());
+
+            $user = User::where('email', $request->user()->email)->first();
+
+            if ($user) {
+                Log::info("Logged out:", ['email' => $user->email]);
+            }
+
+            if ($request->user()->tokens()->delete()) {
+                Log::info("Token deleted successfully");
+            };
+
             return response()->json([
                 'message' => 'User logged out successfully'
             ], 200);
         } catch (Exception $e) {
+            Log::error("Logout error:", ['error' => $e->getMessage()]);
             return response()->json(['error' => 'Something went wrong. Please try again.'], 500);
         }
     }
+
+    public function checkAndUpdatePassword(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|min:6'
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+
+        if (Hash::check($request->password, $user->password)) {
+            Log::info("Password up to date");
+            return response()->json(['message' => 'Password is already up to date']);
+        } else {
+            $user->password = Hash::make($request->password);
+            $user->save();
+            Log::info("Password changed");
+            return response()->json(['message' => 'Password updated successfully']);
+        }
+    }
+
 }
