@@ -2,9 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Models\Food;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,9 +17,19 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        Food::create([
+            'food_id' => 1,
+            'food_name' => 'Nasi',
+        ]);
+
+        User::create([
+            'email' => 'berhasil@gmail.com',
+            'password' => Hash::make('123456'), // Enkripsi password
+        ]);
+        
+        User::create([
+            'email' => 'gagal@gmail.com',
+            'password' => Hash::make('123456'), // Enkripsi password
         ]);
     }
 }

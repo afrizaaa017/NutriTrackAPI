@@ -19,7 +19,7 @@ class Food extends Model
     protected $fillable = [
         'food_id', 
         'food_name',
-        'serving_size'
+        // 'serving_size'
     ];
 
     public function food_nutrient():HasMany

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Food;
 use App\Models\Consume;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -9,37 +10,65 @@ use Illuminate\Support\Facades\Auth;
 
 class ConsumeController extends Controller
 {
-    // public function store(Request $request)
-    // {
-    //     // $request->validate([
-    //     //     'food_id' => 'required|exists:foods,food_id',
-    //     //     'meal_time' => 'required|in:breakfast,lunch,dinner,snack',
-    //     //     'portion' => 'required|integer|min:1',
-    //     // ]);
+    public function store(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'food_id' => 'required|integer',
+            'meal_time' => 'required',
+            'portion' => 'required|integer',
+            'total_sugar' => 'required|numeric',
+            'total_calories' => 'required|numeric',
+            'total_fat' => 'required|numeric',
+            'total_carbs' => 'required|numeric',
+            'total_protein' => 'required|numeric'
+        ]);
 
-    //     $consume = Consume::create($request->all());
+         $food = Food::find($request->food_id);
 
-    //     // $consume = Consume::create([
-    //     //     'email' => Auth::user()->email,
-    //     //     'food_id' => $request->food_id,
-    //     //     'meal_time' => $request->meal_time,
-    //     //     'portion' => $request->portion,
-    //     //     'total_calories' => 200, 
-    //     // ]);
+        if (!$food) {
+            $food = Food::create([
+                'food_id' => $request->food_id, 
+                'food_name' => $request->food_name, 
+            ]);
+        }
 
-    //     return response()->json([
-    //         'message' => 'Data konsumsi berhasil disimpan',
-    //         'data' => $consume
-    //     ], 201);
+        $data = $request->only([
+            'email', 'food_id', 'meal_time', 'portion',
+            'total_sugar', 'total_calories', 'total_fat', 'total_carbs', 'total_protein'
+        ]);
+         
+        if ($request->portion > 1) {
+            $data['total_sugar'] = $request->portion * $request->total_sugar;
+            $data['total_calories'] = $request->portion * $request->total_calories;
+            $data['total_fat'] = $request->portion * $request->total_fat;
+            $data['total_carbs'] = $request->portion * $request->total_carbs;
+            $data['total_protein'] = $request->portion * $request->total_protein;
+        }
 
-    // }
+        $consume = Consume::create($data);
 
-    // public function dailyIntake()
-    // {
-    //     $data = Consume::where('email', Auth::user()->email)
-    //         ->whereDate('created_at', today())
+        return response()->json([
+            'message' => 'Data berhasil disimpan!',
+            'data' => $consume
+        ], 201);
+       
+    }
+
+    // public function getConsumesByMealTime(Request $request, $mealTime) {
+    //     // Validasi bahwa pengguna telah login
+    //     if (!Auth::check()) {
+    //         return response()->json(['error' => 'Unauthorized'], 401);
+    //     }
+
+    //     // Ambil email pengguna yang sedang login
+    //     $userEmail = Auth::user()->email;
+
+    //     // Ambil konsumsi berdasarkan email & meal_time
+    //     $consumes = Consume::where('email', $userEmail)
+    //         ->where('meal_time', $mealTime)
     //         ->get();
 
-    //     return response()->json($data);
+    //     return response()->json($consumes);
     // }
 }

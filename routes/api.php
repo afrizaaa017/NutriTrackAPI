@@ -6,8 +6,8 @@ use App\Http\Controllers\Api\ConsumeController;
 use App\Http\Controllers\Api\UserProfileController;
 use App\Http\Controllers\Api\DailySummaryController;
 
-Route::post('/profile', [UserProfileController::class, 'store']);
-Route::get('/daily-summary', [DailySummaryController::class, 'show']);
+// Route::post('/profile', [UserProfileController::class, 'store']);
+// Route::get('/daily-summary', [DailySummaryController::class, 'show']);
 
 Route::post('/consume', [ConsumeController::class, 'store']);
-Route::get('/consume/daily-intake', [ConsumeController::class, 'dailyIntake']);
+// Route::get('/consumes/{mealTime}', [ConsumeController::class, 'getConsumesByMealTime']);

@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('foods', function (Blueprint $table) {
             $table->integer('food_id');
             $table->primary('food_id');
-            $table->integer('food_name');
-            $table->integer('serving_size');
+            $table->string('food_name');
+            // $table->integer('serving_size');
             $table->timestamps();
         });
     }

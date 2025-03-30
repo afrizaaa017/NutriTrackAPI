@@ -12,11 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('consumes', function (Blueprint $table) {
-            $table->string('email')->unique();
-            $table->integer('food_id')->unique();
-            $table->primary(['email', 'food_id']);
-            $table->foreign('email')->references('email')->on('users')->onDelete('cascade')->primary();
-            $table->foreign('food_id')->references('food_id')->on('foods')->onDelete('cascade')->primary();
+            $table->string('email');
+            $table->integer('food_id');
+            // $table->primary(['email', 'food_id']);
+            $table->foreign('email')->references('email')->on('users')->onDelete('cascade');
+            $table->foreign('food_id')->references('food_id')->on('foods')->onDelete('cascade');
             $table->enum('meal_time', ['breakfast', 'lunch', 'dinner', 'snack']); 
             $table->integer('portion');
             $table->float('total_sugar');
