@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\UserProfileController;
 use App\Http\Controllers\Api\DailySummaryController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\OnboardingController;
+use App\Http\Controllers\Api\FoodController;
 
 // Route::post('/profile', [UserProfileController::class, 'store']);
 // Route::get('/daily-summary', [DailySummaryController::class, 'show']);
@@ -22,3 +23,6 @@ Route::post('/check-and-update-password', [AuthController::class, 'checkAndUpdat
 
 // oboarding
 Route::post('/onboarding', [OnboardingController::class, 'onboarding'])->middleware(['auth:sanctum']);
+
+// food recommendations
+Route::get('user/recommendations', [FoodController::class, 'getFoodRecommendationsByMealTime'])->middleware(['auth:sanctum']);
