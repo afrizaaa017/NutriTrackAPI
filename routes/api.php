@@ -12,10 +12,13 @@ use App\Http\Controllers\Api\OnboardingController;
 // Route::get('/daily-summary', [DailySummaryController::class, 'show']);
 
 Route::post('/consume', [ConsumeController::class, 'store']);
+
 //auth
 Route::post('/signin', [AuthController::class, 'signin']);
 Route::post('/signup', [AuthController::class, 'signup']);
 Route::delete('/signout', [AuthController::class, 'signout'])->middleware(['auth:sanctum']);
+// password reset
+Route::post('/check-and-update-password', [AuthController::class, 'checkAndUpdatePassword']);
 
 // oboarding
 Route::post('/onboarding', [OnboardingController::class, 'onboarding'])->middleware(['auth:sanctum']);
