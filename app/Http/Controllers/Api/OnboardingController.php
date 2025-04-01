@@ -35,7 +35,8 @@ class OnboardingController extends Controller
 
         if (UserProfile::where('email', $email)->exists()) {
             return response()->json([
-                'message' => 'User profile already exists.'
+                'message' => 'User profile already exists.',
+                'data' => UserProfile::where('email', $email)->first()
             ], 409);
         }
 
@@ -72,12 +73,12 @@ class OnboardingController extends Controller
             ], 201);
         } catch (QueryException $e) {
             return response()->json([
-                'message' => 'Failed to create user profile',
-                'error' => $e->getMessage()
+                'message' => 'Failed to create user profile'
             ], 500);
         }
     }
 
+    // harris benedict
     private function calculateCaloriesNeeded($weight, $height, $birthday, $gender, $amr, $goal)
     {
         $age = \Carbon\Carbon::parse($birthday)->age;
