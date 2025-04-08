@@ -25,7 +25,7 @@ class AuthController extends Controller
 
             if (!$user || !Hash::check($request->password, $user->password)) {
                 throw ValidationException::withMessages([
-                    'email' => ['The provided credentials are incorrect.'],
+                    'password' => 'The provided credentials are incorrect.',
                 ]);
             }
             Log::info("User Logging:", ['email' => $user->email]); // Debug output
@@ -35,9 +35,13 @@ class AuthController extends Controller
                 'message' => 'Sign in successful',
             ], 200);
         } catch (ValidationException $e) {
-            return response()->json(['error' => $e->errors()], 422);
+            return response()->json([
+                'token' => 'null',
+                'message' => $e->errors()], 422);
         } catch (Exception $e) {
-            return response()->json(['error' => 'Something went wrong. Please try again.'], 500);
+            return response()->json([
+                'token' => 'null',
+                'message' => 'Something went wrong. Please try again.'], 500);
         }
     }
 
@@ -47,7 +51,7 @@ class AuthController extends Controller
 
             $validatedData = $request->validate([
                 'email' => 'required|email|unique:users',
-                'password' => 'required|min:8',
+                'password' => 'required|min:6',
             ]);
 
             $user = User::create([
@@ -58,15 +62,19 @@ class AuthController extends Controller
             Log::info("User created:", ['email' => $user->email]); // Debug output
 
             return response()->json([
+                'success' => true,
                 'message' => 'User created successfully',
-                'data' => $user
             ], 201);
         } catch (ValidationException $e) {
             Log::error("Validation error:", $e->errors());
-            return response()->json(['error' => $e->errors()], 422);
+            return response()->json([
+                'success' => false,
+                'message' => $e->errors()], 422);
         } catch (Exception $e) {
             Log::error("Signup error:", ['message' => $e->getMessage()]);
-            return response()->json(['error' => 'Something went wrong. Please try again.'], 500);
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong. Please try again.'], 500);
         }
     }
 
@@ -74,17 +82,51 @@ class AuthController extends Controller
     public function signout(Request $request) {
         try {
             if (!$request->user()) {
-                return response()->json(['error' => 'User not authenticated'], 401);
+                return response()->json(['message' => 'User not authenticated'], 401);
             }
-            $user = User::where('email', $request->email)->first();
-            Log::info("Logged out:", $user->email);
-            $request->user()->currentAccessToken()->delete();
-            Log::info("Logged out:", $request->all());
+
+            $user = User::where('email', $request->user()->email)->first();
+
+            if ($user) {
+                Log::info("Logged out:", ['email' => $user->email]);
+            }
+
+            if ($request->user()->tokens()->delete()) {
+                Log::info("Token deleted successfully");
+            };
+
             return response()->json([
                 'message' => 'User logged out successfully'
             ], 200);
         } catch (Exception $e) {
-            return response()->json(['error' => 'Something went wrong. Please try again.'], 500);
+            Log::error("Logout error:", ['error' => $e->getMessage()]);
+            return response()->json([
+                'message' => 'Something went wrong. Please try again.'], 500);
         }
     }
+
+    public function checkAndUpdatePassword(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|min:6'
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+
+        if (Hash::check($request->password, $user->password)) {
+            Log::info("Password up to date");
+            return response()->json(['message' => 'Password is already up to date']);
+        } else {
+            $user->password = Hash::make($request->password);
+            $user->save();
+            Log::info("Password changed");
+            return response()->json(['message' => 'Password updated successfully']);
+        }
+    }
+
 }
