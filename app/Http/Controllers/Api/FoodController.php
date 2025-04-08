@@ -5,40 +5,21 @@ namespace App\Http\Controllers\Api;
 use App\Models\Food;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Carbon\Carbon;
 use App\Models\Consume;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 class FoodController extends Controller
 {
-    public function getFoodRecommendationsByMealTime(Request $request)
+    public function getFoodRecommendationsByMealTime()
     {
         $user = Auth::user();
         $email = $user->email;
-        $currentHour = Carbon::now()->hour;
-        
-        $mealTimes = [
-            'breakfast' => ['start' => 5, 'end' => 9],
-            'lunch' => ['start' => 10, 'end' => 13],
-            'snack' => ['start' => 14, 'end' => 17],
-            'dinner' => ['start' => 18, 'end' => 4]
-        ];
-
-        foreach ($mealTimes as $mealTime => $timeRange) {
-            if (($currentHour >= $timeRange['start'] && $currentHour <= $timeRange['end']) || 
-                ($mealTime == 'dinner' && ($currentHour >= 18 || $currentHour < 5))) {
-                break;
-            }
-        }
-
-        $sevenDaysAgo = Carbon::now()->subDays(7);
         $recommendations = [];
 
         foreach (['breakfast', 'lunch', 'snack', 'dinner'] as $mealTime) {
             $consumes = Consume::where('email', $email)
                 ->where('meal_time', $mealTime)
-                ->where('consumed_at', '>=', $sevenDaysAgo)
                 ->select('food_id', DB::raw('count(*) as food_count'))
                 ->groupBy('food_id')
                 ->orderByDesc('food_count')
