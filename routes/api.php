@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\DailySummaryController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\OnboardingController;
 use App\Http\Controllers\Api\FoodController;
+use App\Models\DailySummary;
 
 // Route::post('/profile', [UserProfileController::class, 'store']);
 // Route::get('/daily-summary', [DailySummaryController::class, 'show']);
@@ -26,3 +27,9 @@ Route::post('/onboarding', [OnboardingController::class, 'onboarding'])->middlew
 
 // food recommendations
 Route::get('user/recommendations', [FoodController::class, 'getFoodRecommendationsByMealTime'])->middleware(['auth:sanctum']);
+
+// count calories in eats screen
+Route::get('/summary', [DailySummaryController::class, 'getDailySummary']);
+
+// list meal added by time
+Route::get('/consumeByTime', [ConsumeController::class, 'getByMealTime']);

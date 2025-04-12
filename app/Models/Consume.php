@@ -23,7 +23,8 @@ class Consume extends Model
         'total_calories',
         'total_fat',
         'total_carbs',
-        'total_protein'
+        'total_protein',
+        'consumed_at',
     ];
 
     public function user()

@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
+use Carbon\Carbon;
 use App\Models\Food;
 use App\Models\Consume;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
+use Illuminate\Container\Attributes\Log;
 
 class ConsumeController extends Controller
 {
@@ -59,6 +60,22 @@ class ConsumeController extends Controller
         ], 201);
        
     }
+
+    public function getByMealTime(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'meal_time' => 'required|in:breakfast,lunch,dinner,snack',
+        ]);
+
+        $consumes = Consume::where('email', $request->email)
+            ->where('meal_time', $request->meal_time)
+            ->with('food') // jika ada relasi dengan tabel `foods`
+            ->get();
+
+        return response()->json($consumes);
+    }
+
 
     // public function getConsumesByMealTime(Request $request, $mealTime) {
     //     // Validasi bahwa pengguna telah login

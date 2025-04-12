@@ -26,7 +26,7 @@ class OnboardingController extends Controller
             'height' => 'required|numeric|min:1',
             'birthday' => 'required|date',
             'goal' => 'required|in:Gain a little weight,Gain a lot of weight,Lose a little weight,Lose a lot of weight,Maintain weight',
-            'AMR' => 'required|in:Sedentary active,Lightly active,Moderately active,Highly active, Extremely active',
+            'AMR' => 'required|in:Sedentary active,Lightly active,Moderately active,Highly active,Extremely active',
             'gender' => 'required|boolean',
             'image' => 'nullable|string',
         ]);
