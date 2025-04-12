@@ -7,11 +7,14 @@ use App\Models\Consume;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class ConsumeController extends Controller
 {
     public function store(Request $request)
     {
+        $nowJakarta = Carbon::now('Asia/Jakarta');
+
         $request->validate([
             'email' => 'required|email',
             'food_id' => 'required|integer',
@@ -45,6 +48,8 @@ class ConsumeController extends Controller
             $data['total_carbs'] = $request->portion * $request->total_carbs;
             $data['total_protein'] = $request->portion * $request->total_protein;
         }
+
+        $data['consumed_at'] = $nowJakarta;
 
         $consume = Consume::create($data);
 

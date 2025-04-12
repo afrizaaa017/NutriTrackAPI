@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Carbon\Carbon;
 
 return new class extends Migration
 {
@@ -24,7 +25,7 @@ return new class extends Migration
             $table->float('total_fat');
             $table->float('total_carbs');
             $table->float('total_protein');
-            $table->timestamp('consumed_at')->useCurrent(); 
+            $table->timestamp('consumed_at'); 
             $table->timestamps();
         });
     }
