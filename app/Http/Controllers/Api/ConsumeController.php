@@ -16,7 +16,7 @@ class ConsumeController extends Controller
 {
     public function store(Request $request)
     {
-        $nowJakarta = Carbon::now('Asia/Jakarta')->copy()->addDay(5);
+        $nowJakarta = Carbon::now('Asia/Jakarta');
         $request->validate([
             'email' => 'required|email',
             'food_id' => 'required|integer',
