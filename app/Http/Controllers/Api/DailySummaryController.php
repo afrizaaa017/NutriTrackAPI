@@ -32,7 +32,7 @@ class DailySummaryController extends Controller
         }
 
         $goals = UserProfile::where('email', $email)->first()->calories_needed;
-        $consumed = Consume::where('email', $user->email)->sum('total_calories');
+        $consumed = DailySummary::where('email', $user->email)->calories_consumed;
         $remaining = $consumed - $goals;
 
         return response()->json([

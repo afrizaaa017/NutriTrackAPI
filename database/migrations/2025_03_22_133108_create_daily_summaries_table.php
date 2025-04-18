@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('daily_summaries', function (Blueprint $table) {
             $table->string('email');
-            $table->primary('email');
-            $table->foreign('email')->references('email')->on('users')->onDelete('cascade')->primary();
+            $table->foreign('email')->references('email')->on('users')->onDelete('cascade');
             $table->date('date');
+            $table->primary(['email', 'date']);
             $table->integer('target_calories');
             $table->integer('calories_consumed');
             $table->integer('fat_consumed');

@@ -13,13 +13,13 @@ class DailySummary extends Model
     protected $primaryKey = 'email';
     public $incrementing = false;
     protected $keyType = 'string';
-    
+
     protected $fillable = [
         'email',
-        'date', 
+        'date',
         'target_calories',
         'calories_consumed',
-        'tar_consumed',
+        'fat_consumed',
         'sugar_consumed',
         'carbs_consumed',
         'protein_consumed'
