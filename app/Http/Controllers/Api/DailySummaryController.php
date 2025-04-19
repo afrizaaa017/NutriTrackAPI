@@ -10,9 +10,44 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Models\UserProfile;
 use Illuminate\Support\Facades\Auth;
+use Carbon\carbon;
 
 class DailySummaryController extends Controller
 {
+    public function getDailyReport(Request $request) {
+        try {
+            $request->validate([
+                'date' => 'required|date',
+            ]);
+
+            $email = Auth::user()->email;
+            $date = Carbon::parse($request->date)->toDateString();
+
+            $exist = DailySummary::where('email', $email)
+                ->where('date', $date)
+                ->first();
+
+            if (!$exist) {
+                return response()->json([
+                    'message' => 'No daily report found for the given date',
+                    'data' => null,
+                ], 404);
+            }
+
+            // Log::info("data retrieved:", ['data' => $exist]);
+
+            return response()->json([
+                'message' => 'Daily report retrieved successfully',
+                'data' => $exist,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+                'data' => null,
+            ], 500);
+        }
+    }
+    
     public function getDailySummary(Request $request)
     {
         $email = $request->query('email');

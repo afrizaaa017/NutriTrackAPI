@@ -33,3 +33,6 @@ Route::get('/summary', [DailySummaryController::class, 'getDailySummary']);
 
 // list meal added by time
 Route::get('/consumeByTime', [ConsumeController::class, 'getByMealTime']);
+
+// dashboard-report
+Route::get('/dashboard', [DailySummaryController::class, 'getDailyReport'])->middleware(['auth:sanctum']);
