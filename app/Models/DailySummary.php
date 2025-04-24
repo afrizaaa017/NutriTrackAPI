@@ -22,7 +22,9 @@ class DailySummary extends Model
         'fat_consumed',
         'sugar_consumed',
         'carbs_consumed',
-        'protein_consumed'
+        'protein_consumed',
+        'weight_recap',
+        'height_recap',
     ];
 
     public function user()

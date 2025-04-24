@@ -22,6 +22,8 @@ return new class extends Migration
             $table->integer('sugar_consumed');
             $table->integer('carbs_consumed');
             $table->integer('protein_consumed');
+            $table->float('weight_recap');
+            $table->float('height_recap');
             $table->timestamps();
         });
     }

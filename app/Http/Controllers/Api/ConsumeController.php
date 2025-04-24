@@ -7,6 +7,7 @@ use App\Models\Food;
 use App\Models\Consume;
 use App\Models\DailySummary;
 use App\Models\UserProfile;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -62,6 +63,10 @@ class ConsumeController extends Controller
 
 
             if (!$summary) {
+                $user = UserProfile::where('email', $request->email)->first();
+                $weight = $user->weight ?? null;
+                $height = $user->height ?? null;
+
                 DailySummary::create([
                     'email' => $request->email,
                     'date' => $date,
@@ -71,6 +76,8 @@ class ConsumeController extends Controller
                     'sugar_consumed' => round($data['total_sugar']),
                     'carbs_consumed' => round($data['total_carbs']),
                     'protein_consumed' => round($data['total_protein']),
+                    'weight_recap' => $weight,
+                    'height_recap' => $height,
                     'created_at' => $nowJakarta,
                 ]);
             } else {
