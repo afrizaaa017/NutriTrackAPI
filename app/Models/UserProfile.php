@@ -15,7 +15,7 @@ class UserProfile extends Model
     protected $primaryKey = 'email';
     public $incrementing = false;
     protected $keyType = 'string';
-    
+
     protected $fillable = [
         'email',
         'first_name',
@@ -28,14 +28,13 @@ class UserProfile extends Model
         'calories_needed',
         'gender',
         'image',
-        'points',
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
-    
+
 }
 
 

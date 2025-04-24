@@ -62,7 +62,6 @@ class OnboardingController extends Controller
                 'calories_needed' => $caloriesNeeded,
                 'gender' => $validatedData['gender'],
                 'image' => $validatedData['image'] ?? null,
-                'points' => 0,
             ]);
 
             Log::info("onboarding succes:", ['email' => $user->email]);

@@ -68,4 +68,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Food::class)->withPivot('email')->withTimestamps();
     }
+
+    public function user_leaderboard()
+    {
+        return $this->hasOne(UserLeaderboard::class);
+    }
 }

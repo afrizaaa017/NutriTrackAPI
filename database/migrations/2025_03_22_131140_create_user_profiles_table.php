@@ -25,8 +25,6 @@ return new class extends Migration
             $table->float('calories_needed');
             $table->boolean('gender');
             $table->string('image')->nullable();
-            $table->integer('points')->default(0);
-
             $table->timestamps();
         });
     }
