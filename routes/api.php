@@ -34,4 +34,5 @@ Route::get('/summary', [DailySummaryController::class, 'getDailySummary']);
 Route::get('/consumeByTime', [ConsumeController::class, 'getByMealTime']);
 
 // dashboard-report
-Route::get('/dashboard', [DailySummaryController::class, 'getDailyReport'])->middleware(['auth:sanctum']);
+Route::get('/dailyReport', [DailySummaryController::class, 'getDailyReport'])->middleware(['auth:sanctum']);
+Route::get('/showGraph', [DailySummaryController::class, 'showGraph'])->middleware(['auth:sanctum']);

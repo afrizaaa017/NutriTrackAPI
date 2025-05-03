@@ -14,7 +14,8 @@ use Carbon\carbon;
 
 class DailySummaryController extends Controller
 {
-    public function getDailyReport(Request $request) {
+    public function getDailyReport(Request $request)
+    {
         try {
             $request->validate([
                 'date' => 'required|date',
@@ -31,7 +32,7 @@ class DailySummaryController extends Controller
                 return response()->json([
                     'message' => 'No daily report found for the given date',
                     'data' => null,
-                ], 404);
+                ]);
             }
 
             // Log::info("data retrieved:", ['data' => $exist]);
@@ -47,7 +48,51 @@ class DailySummaryController extends Controller
             ], 500);
         }
     }
-    
+
+    public function showGraph(Request $request)
+    {
+        try {
+            $email = Auth::user()->email;
+
+            $history = DailySummary::where('email', $email)
+                ->select('date', 'weight_recap', 'height_recap')
+                ->orderBy('date', 'desc')
+                ->take(7)
+                ->get();
+
+            if ($history->isEmpty()) {
+                return response()->json([
+                    'status' => 'empty',
+                    'message' => 'No history data found for the user',
+                    'data' => [],
+                    'count' => 0,
+                ], 200);
+            }
+
+            $formattedData = $history->map(function ($item) {
+                return [
+                    'date' => $item->date,
+                    'weight' => $item->weight_recap,
+                    'height' => $item->height_recap,
+                ];
+            });
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Weight and height history retrieved successfully',
+                'data' => $formattedData,
+                'count' => $history->count(),
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'An error occurred: ' . $e->getMessage(),
+                'data' => [],
+                'count' => 0,
+            ], 500);
+        }
+    }
+
     public function getDailySummary(Request $request)
     {
         $email = $request->query('email');
