@@ -53,8 +53,10 @@ class DailySummaryController extends Controller
     {
         try {
             $email = Auth::user()->email;
+            $date = Carbon::parse($request->date)->toDateString();
 
             $history = DailySummary::where('email', $email)
+                ->where('date', '<=', $date)
                 ->select('date', 'weight_recap', 'height_recap')
                 ->orderBy('date', 'desc')
                 ->take(7)
