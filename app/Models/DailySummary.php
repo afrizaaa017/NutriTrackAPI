@@ -25,6 +25,7 @@ class DailySummary extends Model
         'protein_consumed',
         'weight_recap',
         'height_recap',
+        'is_met',
     ];
 
     public function user()

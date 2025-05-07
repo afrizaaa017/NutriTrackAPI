@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreign('email')->references('email')->on('users')->onDelete('cascade');
             $table->integer('points')->default(0);
             $table->integer('streaks')->default(0);
+            $table->date('last_streak_date')->nullable();
             $table->timestamps();
         });
     }

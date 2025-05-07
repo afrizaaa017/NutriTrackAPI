@@ -17,6 +17,7 @@ class UserLeaderboard extends Model
         'email',
         'points',
         'streaks',
+        'last_streak_date',
     ];
 
     public function user()
