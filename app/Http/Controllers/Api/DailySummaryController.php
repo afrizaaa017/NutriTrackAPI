@@ -72,8 +72,8 @@ class DailySummaryController extends Controller
             $formattedData = $history->map(function ($item) {
                 return [
                     'date' => $item->date,
-                    'weight' => $item->weight_recap,
-                    'height' => $item->height_recap,
+                    'weight_recap' => $item->weight_recap,
+                    'height_recap' => $item->height_recap,
                 ];
             });
 
