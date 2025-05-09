@@ -20,6 +20,8 @@ Route::post('/signup', [AuthController::class, 'signup']);
 Route::delete('/signout', [AuthController::class, 'signout'])->middleware(['auth:sanctum']);
 // password reset
 Route::post('/check-and-update-password', [AuthController::class, 'checkAndUpdatePassword']);
+// change password
+Route::post('/change-password', [AuthController::class, 'changePassword'])->middleware(['auth:sanctum']);
 
 // oboarding
 Route::post('/onboarding', [OnboardingController::class, 'onboarding'])->middleware(['auth:sanctum']);
